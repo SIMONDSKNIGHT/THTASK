@@ -19,6 +19,7 @@ psql -U psql -d mydatabase
 
 # more notes
 on mac you're having to use private/tmp instead of just being able to access files.
+the line you need is docker cp ./tmp/points_100k.csv $(docker compose ps -q db):/tmp/points_100k.csv
 
 you need to copy the csv into the docker container.
 

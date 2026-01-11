@@ -11,6 +11,8 @@ def main():
 
     args = parser.parse_args()
 
+    if args.seed is not None:
+        random.seed(args.seed)
 
     with open(args.output_file, mode='w', newline='') as csvfile:
         fieldnames = ['lat', 'lon']
@@ -22,21 +24,22 @@ def main():
                 args.center_lat,
                 args.center_lon,
                 args.std_km,  # Approx conversion from km to degrees
-                args.seed
+
             )
             writer.writerow({'lat': lat, 'lon': lon})
     
-def generate_random_point(center_lat, center_lon, std_km, seed=None)-> tuple:
+def generate_random_point(center_lat, center_lon, std_km)-> tuple:
+
+    std_m = std_km * 1000
     mlat = 111320  
     mlon = mlat * math.cos(math.radians(center_lat))
-    if seed is not None:
-        random.seed(seed)
+    
     
     center_m = center_lat * mlat
     center_n = center_lon * mlon
 
-    lat = random.gauss(center_m, std_km) / mlat
-    lon = random.gauss(center_n, std_km) /mlon
+    lat = random.gauss(center_m, std_m) / mlat
+    lon = random.gauss(center_n, std_m) / mlon
 
     return lat, lon
 
@@ -44,4 +47,4 @@ if __name__ == "__main__":
     main()
 
 # Example usage:
-# python scripts/generator.py --n 100000 --center-lat 51.5074 --center-lon -0.1278 --std-km 5 --out tmp/points_100k.csv --seed 42
+# python scripts/generator.py --n 100000 --center-lat 51.5074 --center-lon -0.1278 --std-km 10is  --out tmp/points_100k.csv --seed 42
