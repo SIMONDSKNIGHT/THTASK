@@ -21,5 +21,7 @@ services:
       - db
     ports:
       - "8000:8000"
+    volumes:
+      - ./frontend:/app/frontend
 volumes:
   pgdata:

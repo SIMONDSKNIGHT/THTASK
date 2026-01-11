@@ -1,17 +1,17 @@
 import os
 from fastapi import FastAPI, Response
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 import psycopg
+
+
 
 app = FastAPI()
 # Just for testing
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+app.mount("/static", StaticFiles(directory="frontend"), name="frontend")
+@app.get("/")
+def serve_index():
+    return FileResponse("frontend/index.html")
 
 DB_URL = os.environ.get("DB_URL", "postgresql://psql:password@db:5432/mydatabase")
 
@@ -27,23 +27,24 @@ def get_tile(z: int, x: int, y: int):
     sql = """
 WITH 
     env AS (
-        SELECT ST_TileEnvelope(%s, %s, %s) AS geom_3857
+        SELECT ST_TileEnvelope(%s, %s, %s) AS geom_3857,
+               ST_Transform(ST_TileEnvelope(%s, %s, %s), 4326) AS geom_4326
     ),
     temp AS (
         SELECT
             id,
             ST_AsMVTGeom(
-                ST_Transform(geom, 3857), env.geom_3857
+                ST_Transform(geom, 3857), env.geom_3857, 4096, 0, true
             ) AS geom
         FROM public.points
         CROSS JOIN env
-        WHERE ST_Intersects(ST_Transform(points.geom, 3857), env.geom_3857)
+        WHERE public.points.geom && env.geom_4326 AND ST_Intersects(public.points.geom, env.geom_4326)
     )
 SELECT ST_AsMVT(temp.*, 'points', 4096, 'geom') AS mvt FROM temp;
     """
     with get_db_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute(sql, (z, x, y))
+            cur.execute(sql, (z, x, y, z, x, y))
             row = cur.fetchone()
             mvt_data = row[0] if row and row[0] else None
         if not mvt_data:
