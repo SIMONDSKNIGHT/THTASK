@@ -29,7 +29,7 @@ map.on("load", () => {
         6, 3,
         10, 5
         ],
-        "circle-color": "#ff5533",
+        "circle-color": "#5e63ffff",
         "circle-opacity": 0.6
     }
     });
