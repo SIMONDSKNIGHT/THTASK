@@ -4,9 +4,9 @@ Take home task for demonstration of technical skills.
 # Geospatial Data Visualisation App
 Project that aligns to the criteria listed in the take home assessment requirements.:
 -   **Sampling of 100000 locations**
-    - Completed to spec, sampled using bivariate normal distribution with Standard deviation of 10km
+    - Completed to spec, sampled using bivariate normal distribution with Standard Deviation of 10km
     - Centered around London: **LAT 51.5074 LON -0.1278**
-    - generation of points utilises deviation based on metres, not on lon/lat.
+    - generation of points utilises deviation on metres, not on lon/lat.
 - **Data stored in PostGIS**
     - uses predictable schema of GEOM with additional values for debugging
 - **Frontend**
@@ -100,6 +100,26 @@ in future a LOD system would be beneficial, both for visual clarity (increase de
 
 
 ## Trade offs
+
+### Metric correctness vs implementation simplicity
+
+It would be marginally more computationally expensive to figure out whether the variance of a point should be smaller the larger the absolute longitude was for a given point, but for the spec, I decided against it and so we just work with the relative values at the POI
+
+### Vector tiles over pre-clustering
+
+Vector tiles are probably more intensive as the number of points increases but given the spec, thsi technique was used over clustering
+
+### Python over a faster systems language
+
+Python was used as the operational bottleneck while the primary performance bottleneck is on the database side, so I decided to just use the language I was more familiar with.
+
+### MapLibre and plain JS over React
+
+Given the restrictions of the  A framework would be justified for a more application-heavy interface.
+
+### Frontend served by backend container
+
+Serving frontend assets from the backend simplifies deployment and aligns with the take-home scope, at the cost of scalability compared to a dedicated static hosting layer.
 
 
 ## Running Locally
