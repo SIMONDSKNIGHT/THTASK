@@ -1,0 +1,1 @@
+- change the SQL so we calculate both web mercator and lat lon at database start
