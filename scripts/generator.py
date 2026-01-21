@@ -47,4 +47,4 @@ if __name__ == "__main__":
     main()
 
 # Example usage:
-# python scripts/generator.py --n 100000 --center-lat 0 --center-lon 0 --std-km 10  --output-file scripts/points_100k00.csv --seed 42
+# python scripts/generator.py --n 100000 --center-lat 0 --center-lon 0 --std-km 10  --output-file scripts/points.csv --seed 42

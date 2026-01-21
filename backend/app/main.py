@@ -148,7 +148,6 @@ FROM temp;
 
     if mode == "cluster" and z <= CLUSTER_MAX_ZOOM:
         sql_to_run = sql_cluster
-        grid = max(50, 2000 - 150 * z)  # or whatever you pick
         params = (z, x, y, grid)
     else:
         sql_to_run = sql

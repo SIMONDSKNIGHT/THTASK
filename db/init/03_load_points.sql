@@ -4,7 +4,7 @@ CREATE TEMP TABLE points_raw (
     lon DOUBLE PRECISION
 );
 COPY points_raw(lat, lon)
-FROM '/data/points_100k.csv' /*I swear I'll figure out a cleaner solution*/
+FROM '/data/points.csv' /*I swear I'll figure out a cleaner solution*/
 WITH (FORMAT csv, HEADER true);
 
 INSERT INTO public.points (lat, lon, geom_4326,geom_3857)

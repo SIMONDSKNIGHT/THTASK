@@ -1,6 +1,6 @@
 ### TakeHomeGDV
 Take home task for demonstration of technical skills.
-
+![Map preview](img/file.png)
 # Geospatial Data Visualisation App
 Project that aligns to the criteria listed in the take home assessment requirements.:
 -   **Sampling of 100000 locations**
@@ -147,7 +147,7 @@ deploying frontend from the backend simplifies deployment and aligns with the ta
 
 Generate the 100k points first throught the script in scripts
 ```bash
-python scripts/generator.py --n 100000 --center-lat 51.5074 --center-lon -0.1278 --std-km 10  --output-file data/points_100k.csv --seed 42
+python scripts/generator.py --n 100000 --center-lat 51.5074 --center-lon -0.1278 --std-km 10  --output-file data/points.csv --seed 42
 ```
 then 
 ```bash
